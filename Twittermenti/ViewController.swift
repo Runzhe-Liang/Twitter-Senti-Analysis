@@ -20,6 +20,8 @@ class ViewController: UIViewController {
     let sentimentClassifier = TweetSentimentClassifier_model()
     
     let swifter = Swifter(consumerKey: "UrYwdEoYSm33RbPXEYeI5p0Ph", consumerSecret: "dzVl9dcm3sSwjXDa6Z9881d0eglqz4jeG4fp502dumnYItLSLT")
+    
+    let tweetCount = 100
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +32,7 @@ class ViewController: UIViewController {
         
         if let searchText = textField.text {
             
-            swifter.searchTweet(using: searchText, lang:"en", count: 100, tweetMode: .extended) { result, searchMetadata in
+            swifter.searchTweet(using: searchText, lang:"en", count: tweetCount, tweetMode: .extended) { result, searchMetadata in
                 
                 var tweets = [TweetSentimentClassifier_modelInput]()
                 
@@ -55,15 +57,19 @@ class ViewController: UIViewController {
                     }
                     
                     if sentimentScore > 30 {
+                        self.sentimentLabel.text = "🥵"
+                    } else if sentimentScore > 20 {
                         self.sentimentLabel.text = "😍"
-                    } else if sentimentScore > 15 {
-                        self.sentimentLabel.text = "☺️"
-                    } else if -15 < sentimentScore {
+                    } else if sentimentScore > 10 {
+                        self.sentimentLabel.text = "😘"
+                    } else if sentimentScore > -10 {
                         self.sentimentLabel.text = "😌"
-                    } else if sentimentScore < -30 {
+                    } else if sentimentScore > -20 {
+                        self.sentimentLabel.text = "😕"
+                    } else if sentimentScore > -30 {
                         self.sentimentLabel.text = "😫"
                     } else {
-                        self.sentimentLabel.text = "😠"
+                        self.sentimentLabel.text = "🤮"
                     }
                     
                 } catch {
